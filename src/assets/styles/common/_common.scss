@@ -1,0 +1,33 @@
+html {
+  height: 100%;
+  font-size: 100%;
+  min-height: 100%;
+  position: relative;
+  margin: 0;
+}
+
+body {
+  height: 100%;
+  font-style: normal;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-weight: normal;
+  font-size: $font-size;
+  line-height: 1.25;
+  font-family: $font-base;
+  color: $black;
+  background-color: $body-color;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  outline: none;
+
+  &:active,
+  &:focus,
+  &:hover,
+  &:visited:active,
+  &:visited:hover {
+    outline: none;
+  }
+}

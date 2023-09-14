@@ -1,0 +1,44 @@
+/*
+** Colors
+*/
+$white: #FFF;
+$black: #000;
+$yellow: #FFF200;
+$gray100: #F2F2F2;
+$gray200: #C4C4C4;
+$body-color: $white;
+
+
+/*
+** Font-family
+*/
+$font-primary: "Roboto";
+$font-base: $font-primary;
+
+
+/*
+** Font-size
+*/
+$font-size: 18px;
+
+
+/*
+** Breakpoints
+*/
+$mobile: 768px;
+$tablet: 1024px;
+$laptop: 1270px;
+
+$breakpoints: (
+  'mobile': (max-width: $mobile),
+  'tablet': (max-width: $tablet),
+  'laptop': (max-width: $laptop)
+) !default;
+
+/*
+** Grids
+*/
+
+$x-offset-22: 22px;
+
+
