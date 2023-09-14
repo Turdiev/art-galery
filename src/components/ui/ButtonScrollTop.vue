@@ -18,6 +18,7 @@ import IconArrowTop from "@/components/icons/IconArrowTop.vue";
   height: 49px;
   border-radius: 8px;
   border: 1px solid $gray200;
+  background: $white;
   cursor: pointer;
 }
 </style>

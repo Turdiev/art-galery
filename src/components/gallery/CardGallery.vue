@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/" class="card">
+  <router-link to="/photo" class="card">
 
   </router-link>
 </template>
