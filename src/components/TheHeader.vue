@@ -7,7 +7,16 @@
       <div class="header__wrapper">
         <TheLogo />
         <div class="header__action">
-          <router-link v-if="!isCurrentPage" to="/favorites">
+          <transition name="slide-fade">
+            <div v-if="isSearchOpen" class="header__input">
+              <input type="text" placeholder="Поиск" />
+            </div>
+          </transition>
+          <router-link
+              v-if="!isCurrentPage"
+              to=""
+              @click="isSearchOpen = !isSearchOpen"
+          >
             <IconSearch class="header__icon"/>
             <span v-if="!isMobile">Поиск</span>
           </router-link>
@@ -28,9 +37,12 @@ import IconFavorites from "@/components/icons/IconFavorites.vue";
 import IconSearch from "@/components/icons/IconSearch.vue";
 import useMediaQueries from "@/use/MediaQueries";
 import useRouteQueries from "@/use/RouteQueries";
+import {ref} from "vue";
 
 const { isMobile } = useMediaQueries()
 const { isCurrentPage } = useRouteQueries('home')
+
+const isSearchOpen = ref(false)
 
 
 </script>
@@ -92,5 +104,27 @@ const { isCurrentPage } = useRouteQueries('home')
     }
   }
 
+  &__input {
+    width: 240px;
+    height: 30px;
+    overflow: hidden;
+    transition: width 0.3s;
+
+    & input {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
 }
 </style>

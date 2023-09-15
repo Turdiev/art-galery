@@ -5,10 +5,20 @@ let isFetchingData = false
 export const useImageStore = defineStore('imageStore', {
   state: () => ({
     images: [],
-    favoritesPictures: JSON.parse(localStorage.getItem('favorites-images')) || []
+    favoritesPictures: JSON.parse(localStorage.getItem('favorites-images')) || [],
+    isLoading: false,
   }),
   getters: {},
   actions: {
+    async getImageToId(idImage) {
+      const res = await useApiResponse({
+        method: 'GET',
+        url: `/photos/${idImage}`,
+      })
+
+      this.images = [res]
+    },
+
     async getRandomImages() {
       this.images = await useApiResponse({
         method: 'GET',
@@ -30,7 +40,8 @@ export const useImageStore = defineStore('imageStore', {
 
     async searchImageWhenScrolling(searchQuery = '', pageId) {
       if (!isFetchingData) {
-        isFetchingData = true;
+        isFetchingData = true
+        this.isLoading = true
         let url = '/photos'
         const params = {
           page: pageId,
@@ -49,6 +60,8 @@ export const useImageStore = defineStore('imageStore', {
 
         const images = res.results ? res.results : res
         this.images = [...this.images, ...images]
+
+        this.isLoading = false
         setTimeout(() => {
           isFetchingData = false;
         }, 1000);

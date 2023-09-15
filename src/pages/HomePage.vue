@@ -10,7 +10,7 @@
           class="home-page__gallery"
           :content="mainContent"
       />
-      <Loading />
+      <Loading v-if="imageStore.isLoading"/>
     </div>
     <Button
         v-if="!isMobile"

@@ -6,11 +6,11 @@
       <div class="photo-page__wrapper">
         <div class="photo-page__person person">
           <div class="person__avatar">
-            <img :src="currentImage.user.profile_image.medium" alt="avatar">
+            <img :src="currentImage && currentImage.user.profile_image.medium" alt="avatar">
           </div>
           <div class="person__wrapper">
-            <span class="person__name">{{ currentImage.user.name }}</span>
-            <span class="person__username">@{{ currentImage.user.username }}</span>
+            <span class="person__name">{{ currentImage && currentImage.user.name }}</span>
+            <span class="person__username">@{{ currentImage && currentImage.user.username }}</span>
           </div>
         </div>
         <div class="photo-page__action">
@@ -25,6 +25,7 @@
           <Button
               color="yellow"
               padding="p-12-23"
+              :blank="true"
               class="photo-page__favorites"
           >
             <IconDownload />
@@ -33,7 +34,10 @@
         </div>
       </div>
       <div class="photo-page__display">
-        <img :src="currentImage.urls.raw" :alt="currentImage.alt_description">
+        <img :src="currentImage && currentImage.urls.raw" :alt="currentImage && currentImage.alt_description">
+        <div class="photo-page__views">
+          <IconViews />
+        </div>
       </div>
     </div>
   </main>
@@ -45,22 +49,37 @@ import TheHeader from "@/components/TheHeader.vue";
 import Button from "@/components/ui/Button.vue";
 import IconFavorites from "@/components/icons/IconFavorites.vue";
 import IconDownload from "@/components/icons/IconDownload.vue";
+import IconViews from "@/components/icons/IconViews.vue";
 import useMediaQueries from "@/use/MediaQueries";
 import useRouteQueries from "@/use/RouteQueries";
 import {useImageStore} from "@/store";
-import {computed} from "vue";
+import {computed, onBeforeMount, watchEffect} from "vue";
 
 const { isMobile } = useMediaQueries()
 const { paramsPage } = useRouteQueries('photo', 'id')
 
 const imageStore = useImageStore()
 
-const currentImage = imageStore.images.find(img => img.id === paramsPage)
+const currentImage = computed(() => imageStore.images.find(img => img.id === paramsPage))
 const isFavorites = computed(() => imageStore.favoritesPictures.findIndex(img => img.id === paramsPage))
 
 const addToFavorites = () => {
-  imageStore.addPictureToFavorites(currentImage)
+  imageStore.addPictureToFavorites(currentImage.value)
 }
+
+watchEffect(() => {
+  if (!currentImage.value) {
+    imageStore.getImageToId(paramsPage)
+  }
+})
+onBeforeMount(async () => {
+  if (!imageStore.images) {
+    console.log('iq')
+    // await imageStore.getImageToId(paramsPage)
+  }
+  console.log(imageStore.images);
+  console.log(currentImage);
+})
 
 </script>
 
@@ -104,6 +123,7 @@ const addToFavorites = () => {
   }
 
   &__display {
+    position: relative;
     width: 100%;
     height: 774px;
     background: #000;
@@ -117,6 +137,18 @@ const addToFavorites = () => {
       width: 100%;
       height: 100%;
       object-fit: contain;
+    }
+  }
+
+  &__views {
+    position: absolute;
+    bottom: 34px;
+    right: 40px;
+    cursor: pointer;
+
+    @include respond-to(mobile) {
+      bottom: 6px;
+      right: 10px;
     }
   }
 }

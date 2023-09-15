@@ -31,6 +31,7 @@ defineProps({
     align-items: center;
     gap: 23px 0;
     flex-wrap: wrap;
+    padding-bottom: 80px;
 
     @include respond-to(mobile) {
       gap: 16px 0;

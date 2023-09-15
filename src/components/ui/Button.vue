@@ -3,6 +3,7 @@
       :to="path"
       :class="`_${color} _${padding}`"
       class="button"
+      :target="blank ? '_blank' : ''"
   >
     <slot />
   </router-link>
@@ -22,6 +23,10 @@ defineProps({
   padding: {
     type: String,
     default: '0'
+  },
+  blank: {
+    type: Boolean,
+    default: false
   }
 })
 
