@@ -1,6 +1,6 @@
 <template>
   <router-link :to="`/photo/${image.id}`" class="card">
-    <img :src="image.urls.regular" alt="">
+    <img :src="image.urls.small" alt="">
   </router-link>
 </template>
 
@@ -26,6 +26,7 @@ defineProps({
     width: 100%;
     height: 100%;
     border-radius: 8px;
+    object-fit: cover;
   }
 }
 </style>

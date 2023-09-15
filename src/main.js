@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import { createPinia } from 'pinia'
 import { Vue3Mq } from "vue3-mq";
+import VueScrollTo from "vue-scrollto"
 import '@/assets/styles/main.scss'
 
 const pinia = createPinia()
@@ -18,4 +19,5 @@ app.use(Vue3Mq, {
         'desctop': Infinity
     }
 })
+app.use(VueScrollTo)
 app.mount('#app')

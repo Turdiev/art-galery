@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <TheHeader id="top"/>
   <TheSearch
     @click="onSearchImages($event)"
   />
@@ -17,6 +17,7 @@
         color="white"
         padding="p-16"
         class="home-page__button-scroll"
+        v-scroll-to="'#top'"
     >
       <IconArrowTop />
     </Button>

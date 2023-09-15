@@ -15,9 +15,10 @@
         </div>
         <div class="photo-page__action">
           <Button
-              color="white"
+              :color="isFavorites !== -1 ? 'yellow' : 'white'"
               padding="p-16"
               class="photo-page__favorites"
+              @click="addToFavorites()"
           >
             <IconFavorites />
           </Button>
@@ -47,6 +48,7 @@ import IconDownload from "@/components/icons/IconDownload.vue";
 import useMediaQueries from "@/use/MediaQueries";
 import useRouteQueries from "@/use/RouteQueries";
 import {useImageStore} from "@/store";
+import {computed} from "vue";
 
 const { isMobile } = useMediaQueries()
 const { paramsPage } = useRouteQueries('photo', 'id')
@@ -54,7 +56,11 @@ const { paramsPage } = useRouteQueries('photo', 'id')
 const imageStore = useImageStore()
 
 const currentImage = imageStore.images.find(img => img.id === paramsPage)
-console.log('CUR', currentImage)
+const isFavorites = computed(() => imageStore.favoritesPictures.findIndex(img => img.id === paramsPage))
+
+const addToFavorites = () => {
+  imageStore.addPictureToFavorites(currentImage)
+}
 
 </script>
 

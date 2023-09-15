@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import useApiResponse from "@/use/ApiResponse";
 
+let isFetchingData = false
 export const useImageStore = defineStore('imageStore', {
   state: () => ({
     images: [],
-    foundPictures: []
+    favoritesPictures: JSON.parse(localStorage.getItem('favorites-images')) || []
   }),
   getters: {},
   actions: {
@@ -28,24 +29,42 @@ export const useImageStore = defineStore('imageStore', {
     },
 
     async searchImageWhenScrolling(searchQuery = '', pageId) {
-      let url = '/photos'
-      const params = {
-        page: pageId,
+      if (!isFetchingData) {
+        isFetchingData = true;
+        let url = '/photos'
+        const params = {
+          page: pageId,
+        }
+
+        if (searchQuery !== '') {
+          params.query = searchQuery
+          url = '/search/photos'
+        }
+
+        const res = await useApiResponse({
+          method: 'GET',
+          url,
+          params
+        })
+
+        const images = res.results ? res.results : res
+        this.images = [...this.images, ...images]
+        setTimeout(() => {
+          isFetchingData = false;
+        }, 1000);
+      }
+    },
+
+    addPictureToFavorites(image) {
+      const findIndex = this.favoritesPictures.findIndex(img => img.id === image.id)
+
+      if (findIndex === -1) {
+        this.favoritesPictures.push(image)
+      } else {
+        this.favoritesPictures.splice(findIndex, 1)
       }
 
-      if (searchQuery !== '') {
-        params.query = searchQuery
-        url = '/search/photos'
-      }
-
-      const res = await useApiResponse({
-        method: 'GET',
-        url,
-        params
-      })
-
-      const images = res.results ? res.results : res
-      this.images = [...this.images, ...images]
+      localStorage.setItem('favorites-images', JSON.stringify([...this.favoritesPictures]))
     }
   },
 })

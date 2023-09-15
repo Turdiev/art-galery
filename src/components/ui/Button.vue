@@ -17,7 +17,7 @@ defineProps({
   },
   path: {
     type: String,
-    default: '#'
+    default: ''
   },
   padding: {
     type: String,
