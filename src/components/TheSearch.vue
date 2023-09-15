@@ -5,8 +5,16 @@
       <img src="@/assets/images/background-search.jpg" alt="" class="search__img"/>
     </picture>
     <div class="search__input">
-      <input v-model="searchValue" placeholder="Поиск" class="input"/>
-      <IconSearch class="search__icon"/>
+      <input
+          v-model="searchValue"
+          placeholder="Поиск"
+          class="input"
+          @keydown.enter="onSearch()"
+      />
+      <IconSearch
+          class="search__icon"
+          @click="onSearch()"
+      />
     </div>
   </div>
 </template>
@@ -17,6 +25,12 @@ import {ref} from "vue";
 import IconSearch from "@/components/icons/IconSearch.vue";
 
 const searchValue = ref()
+const emits = defineEmits(['click'])
+
+const onSearch = () => {
+  emits('click', searchValue)
+  searchValue.value = ''
+}
 
 </script>
 

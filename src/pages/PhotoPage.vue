@@ -6,10 +6,11 @@
       <div class="photo-page__wrapper">
         <div class="photo-page__person person">
           <div class="person__avatar">
+            <img :src="currentImage.user.profile_image.medium" alt="avatar">
           </div>
           <div class="person__wrapper">
-            <span class="person__name">Vincent van Gogh</span>
-            <span class="person__username">@vincentvangogh</span>
+            <span class="person__name">{{ currentImage.user.name }}</span>
+            <span class="person__username">@{{ currentImage.user.username }}</span>
           </div>
         </div>
         <div class="photo-page__action">
@@ -31,7 +32,7 @@
         </div>
       </div>
       <div class="photo-page__display">
-        <img src="" alt="">
+        <img :src="currentImage.urls.raw" :alt="currentImage.alt_description">
       </div>
     </div>
   </main>
@@ -44,10 +45,17 @@ import Button from "@/components/ui/Button.vue";
 import IconFavorites from "@/components/icons/IconFavorites.vue";
 import IconDownload from "@/components/icons/IconDownload.vue";
 import useMediaQueries from "@/use/MediaQueries";
+import useRouteQueries from "@/use/RouteQueries";
+import {useImageStore} from "@/store";
 
 const { isMobile } = useMediaQueries()
+const { paramsPage } = useRouteQueries('photo', 'id')
 
-console.log('is', isMobile.value)
+const imageStore = useImageStore()
+
+const currentImage = imageStore.images.find(img => img.id === paramsPage)
+console.log('CUR', currentImage)
+
 </script>
 
 <style lang="scss" scoped>
@@ -94,6 +102,16 @@ console.log('is', isMobile.value)
     height: 774px;
     background: #000;
     border-radius: 8px;
+
+    @include respond-to(mobile) {
+      height: 227px;
+    }
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 }
 
@@ -111,10 +129,18 @@ console.log('is', isMobile.value)
     width: 55px;
     height: 55px;
     background: #fff;
+    border-radius: 8px;
 
     @include respond-to(mobile) {
       width: 48px;
       height: 48px;
+    }
+
+    & img  {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
     }
   }
 

@@ -1,13 +1,13 @@
 <template>
   <header
       class="header"
-      :class="{'_height': !isHomePage}"
+      :class="{'_height': !isCurrentPage}"
   >
     <div class="container">
       <div class="header__wrapper">
         <TheLogo />
         <div class="header__action">
-          <router-link v-if="!isHomePage" to="/favorites">
+          <router-link v-if="!isCurrentPage" to="/favorites">
             <IconSearch class="header__icon"/>
             <span v-if="!isMobile">Поиск</span>
           </router-link>
@@ -27,13 +27,10 @@ import TheLogo from "@/components/TheLogo.vue";
 import IconFavorites from "@/components/icons/IconFavorites.vue";
 import IconSearch from "@/components/icons/IconSearch.vue";
 import useMediaQueries from "@/use/MediaQueries";
-import {useRoute} from "vue-router";
-import {computed} from "vue";
+import useRouteQueries from "@/use/RouteQueries";
 
 const { isMobile } = useMediaQueries()
-const route = useRoute()
-
-const isHomePage = computed(() => route.name === 'home')
+const { isCurrentPage } = useRouteQueries('home')
 
 
 </script>

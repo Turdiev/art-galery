@@ -12,7 +12,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '@/pages/FavoritesPage.vue')
   },
   {
-    path: '/photo',
+    path: '/photo/:id',
     name: 'photo',
     component: () => import(/* webpackChunkName: "about" */ '@/pages/PhotoPage.vue')
   }

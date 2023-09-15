@@ -1,14 +1,11 @@
 <template>
   <div class="gallery">
-    <div class="container">
-      <div class="gallery__wrapper">
-        <CardGallery />
-        <CardGallery />
-        <CardGallery />
-        <CardGallery />
-        <CardGallery />
-        <CardGallery />
-      </div>
+    <div class="gallery__wrapper">
+      <CardGallery
+        v-for="image in content"
+        :key="image.id"
+        :image="image"
+      />
     </div>
   </div>
 </template>
@@ -16,6 +13,13 @@
 <script setup>
 
 import CardGallery from "@/components/gallery/CardGallery.vue";
+
+defineProps({
+  content: {
+    type: Array,
+  }
+})
+
 </script>
 
 <style lang="scss" scoped>

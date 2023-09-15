@@ -1,10 +1,17 @@
 <template>
   <TheHeader />
-  <TheSearch />
+  <TheSearch
+    @click="onSearchImages($event)"
+  />
   <DividerLine />
   <main class="home-page">
-    <Gallery class="home-page__gallery"/>
-    <Loading />
+    <div class="container">
+      <Gallery
+          class="home-page__gallery"
+          :content="mainContent"
+      />
+      <Loading />
+    </div>
     <Button
         v-if="!isMobile"
         color="white"
@@ -26,8 +33,50 @@ import Loading from "@/components/ui/Loading.vue";
 import Button from "@/components/ui/Button.vue";
 import useMediaQueries from "@/use/MediaQueries";
 import IconArrowTop from "@/components/icons/IconArrowTop.vue";
+import {useImageStore} from "@/store";
+import { ref, watchEffect, onMounted, onUnmounted} from "vue";
 
 const { isMobile } = useMediaQueries()
+const imageStore = useImageStore()
+
+imageStore.getRandomImages()
+
+const mainContent = ref()
+const searchValue = ref('')
+const pageNumber = ref(1)
+
+watchEffect(() => {
+  if (imageStore.images.length) {
+    mainContent.value = imageStore.images
+  }
+})
+
+const onSearchImages = (event) => {
+  searchValue.value = event.value
+  imageStore.searchImages(event.value)
+}
+
+const handleScroll = () => {
+  const scrollY = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+
+  if (scrollY + windowHeight >= documentHeight - 200) {
+    pageNumber.value++
+    imageStore.searchImageWhenScrolling(searchValue.value, pageNumber.value)
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+});
+
+// Удалить обработчик прокрутки при демонтаже
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
+
 </script>
 
 <style lang="scss" scoped>
